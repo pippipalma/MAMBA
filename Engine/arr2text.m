@@ -4,7 +4,7 @@ function t = arr2text(x)
 % Convert back any array x to MATLAB expression t
 %
 %   Author: Giuseppe Palma
-%   Date: 22/04/2022
+%   Date: 06/05/2022
 
 t = '';
 n = ndims(x);
@@ -37,7 +37,14 @@ else
     for i = 1 : size(x, 1) - 1
         t = [t row2text(x(i, :)) '; '];
     end
-    t = [t row2text(x(size(x, 1), :)) b(2)];
+    try
+        t = [t row2text(x(size(x, 1), :)) b(2)];
+    catch err
+        if ~strcmp(err.message, 'Parentheses indexing is not allowed')
+            rethrow(err)
+        end
+        t = [t '##' strtrim(evalc('disp(x)')) '##' b(2)];
+    end
 end
 t = t(1 + (t(1) == ' ') : end - (t(end) == ' '));
 
@@ -47,8 +54,12 @@ if iscell(x)
     f = @(i) arr2text(x{i});
 elseif isnumeric(x)
     f = @(i) num2str(x(i));
+elseif isstruct(x)
+    f = @(i) struct2str(x(i));
+elseif islogical(x)
+    f = @(i) logical2str(x(i));
 end
-if iscell(x) || isnumeric(x)
+if iscell(x) || isnumeric(x) || isstruct(x) || islogical(x)
     for i = 1 : numel(x)
         t = [t f(i) ' '];
     end
@@ -57,4 +68,17 @@ elseif ischar(x)
     t = ['''' x ''''];
 else
     t = ['##' strtrim(evalc('disp(x)')) '##'];
+end
+
+function x = struct2str(s)
+x = cellfun(@(f) ['''' f ''', ' arr2text(s.(f)) ', '], ...
+    fieldnames(s), 'UniformOutput', false);
+x = ['struct(', x{:}, ')'];
+x(end - 2 : end - 1) = '';
+
+function x = logical2str(l)
+if l
+    x = 'true';
+else
+    x = 'false';
 end
