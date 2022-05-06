@@ -71,10 +71,15 @@ else
 end
 
 function x = struct2str(s)
-x = cellfun(@(f) ['''' f ''', ' arr2text(s.(f)) ', '], ...
+x = cellfun(@(f) ['''' f ''', ' arr2text(dc(s.(f))) ', '], ...
     fieldnames(s), 'UniformOutput', false);
 x = ['struct(', x{:}, ')'];
 x(end - 2 : end - 1) = '';
+
+function x = dc(x)
+if iscell(x)
+    x = {x};
+end
 
 function x = logical2str(l)
 if l
