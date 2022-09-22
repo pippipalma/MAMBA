@@ -1,10 +1,10 @@
-function t = arr2text(x)
+function t = arr2text(x, ~)
 % t = arr2text(x)
 %
 % Convert back any array x to MATLAB expression t
 %
 %   Author: Giuseppe Palma
-%   Date: 06/05/2022
+%   Date: 09/05/2022
 
 t = '';
 n = ndims(x);
@@ -27,9 +27,9 @@ if n > 2
     ix = repmat({':'}, 1, n - 1);
     t = [t 'cat(' num2str(n) ', '];
     for i = 1 : size(x, n) - 1
-        t = [t arr2text(x(ix{:}, i)) ', '];
+        t = [t arr2text(x(ix{:}, i), true) ', '];
     end
-    t = [t arr2text(x(ix{:}, size(x, n))) ')'];
+    t = [t arr2text(x(ix{:}, size(x, n)), true) ')'];
 elseif isempty(x)
     t = [t b];
 else
@@ -47,6 +47,9 @@ else
     end
 end
 t = t(1 + (t(1) == ' ') : end - (t(end) == ' '));
+if nargin < 2 && isnumeric(x) && ~isa(x, 'double')
+    t = [class(x) '(' t ')'];
+end
 
 function t = row2text(x)
 t = '';

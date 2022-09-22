@@ -1,9 +1,12 @@
-function IDs = ID_select(folder, ID_include, ID_exclude)
+function IDs = ID_select(folder, ID_include, ID_exclude, ext)
 if nargin < 2
     ID_include = '*';
 end
 if nargin < 3
     ID_exclude = '';
+end
+if nargin < 4
+    ext = 'mat';
 end
 fold_char = ischar(folder);
 IDs = unique(proc_ID(ID_include));
@@ -15,7 +18,7 @@ function N = proc_ID(ID)
     if isnumeric(ID)
         N = arrayfun(@num2str, ID(:), UO{:});
         if fold_char
-            set = arrayfun(@(x) id(x.name), dir(fullfile(folder, '*.mat')), UO{:});
+            set = arrayfun(@(x) id(x.name), dir(fullfile(folder, ['*.' ext])), UO{:});
         else
             set = name_match(folder, '*');
         end
@@ -23,7 +26,7 @@ function N = proc_ID(ID)
         N = N(I);
     elseif ischar(ID)
         if fold_char
-            N = arrayfun(@(x) id(x.name), dir(fullfile(folder, [ID '.mat'])), UO{:});
+            N = arrayfun(@(x) id(x.name), dir(fullfile(folder, [ID '.' ext])), UO{:});
         else
             N = name_match(folder, ID);
         end

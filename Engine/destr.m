@@ -42,11 +42,17 @@ function [d, msk, EVs_inx, s] = destr(d0, varargin)
 %   - progress_bar: flag for displaying the progress bar (default: true)
 %
 %   Author: Giuseppe Palma
-%   Date: 27/04/2022
+%   Date: 23/06/2022
 
 s = opt_pars('EVs_inx', {}, 'subsampling', 1, 'labels', {}, ...
     'vars', ':', 'mfix', true, 'keep_all_voxels', false, ...
     'progress_bar', true, 'rc_name', 'patients', varargin{:});
+if isempty(d0)
+    d = [];
+    msk = [];
+    EVs_inx = [];
+    return
+end
 dm = @(x) error([x ' does not match previous sizes.']);
 s.mfix = logical(s.mfix);
 if istable(d0)
