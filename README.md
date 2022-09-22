@@ -1,4 +1,18 @@
-# MAMBA
-MAMBA – Multi-pAradigM voxel-Based Analysis: a computational cookbot
+<img src="MAMBA.png" align="left" alt="drawing" width="140"/>
 
-![MAMBA](MAMBA.png)
+# MAMBA
+
+Welcome to MAMBA, the computational cookbot for Multi-pAradigM voxel-Based Analysis.
+
+<br />
+
+The Matlab toolbox MAMBA is designed for the flexible application of statistical voxel-based (VB) analysis in different scenarios in medical imaging and radiation oncology. It provides open-source functions to compute VB statistical models of the input data, according to a great variety of regression schemes, and to derive VB maps of the observed significance level, performing a non-parametric permutation inference. The toolbox allows for including VB and global outcomes, as well as an arbitrary amount of VB and global explanatory variables. In addition, the Matlab Parallel Computing Toolbox is exploited to take advantage of the perfect parallelizability of most workloads.
+
+MAMBA is an open-source toolbox, freely available for academic and non-commercial purposes. It is designed to make state-of-the-art VB analysis accessible to research scientists without the programming resources needed to build from scratch their own software solutions. At the same time, the source code is handed out for more experienced users to complement their own tools, also customizing user-defined models.
+
+Users are encouraged to freely adapt MAMBA according to their needs, and assume all responsibility and risk with respect to their use of the toolbox, which is provided “AS IS”. In addition, users are welcome to cite the following references, anywhere they use MAMBA:
+
+- G. Palma, S. Monti, and L. Cella. *Voxel-based analysis in radiation oncology: A methodological cookbook*. Physica Medica, 69:192–204, 2020 (https://www.sciencedirect.com/science/article/pii/S1120179719305344);
+- G. Palma, L. Cella, and S. Monti. *MAMBA – Multi-pAradigM voxel-Based Analysis: A computational cookbot*. Submitted, 2022.
+
+The MAMBA User Manual (which includes the extensive reference manual and several examples that the user can fully work out on a synthetic dataset, as well as the toolbox configurations that led to clinical results previously published in the literature) can be found [here](Docs/UserManual.pdf).
