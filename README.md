@@ -16,3 +16,18 @@ Users are encouraged to freely adapt MAMBA according to their needs, and assume 
 - G. Palma, L. Cella, and S. Monti. *MAMBA – Multi-pAradigM voxel-Based Analysis: A computational cookbot*. Submitted, 2022.
 
 The MAMBA User Manual (which includes the extensive reference manual and several examples that the user can fully work out on a synthetic dataset, as well as the toolbox configurations that led to clinical results previously published in the literature) can be found [here](Docs/UserManual.pdf).
+
+## Getting started
+
+To install MAMBA and run a quick example:
+
+1. Download the latest version of MAMBA from [here](https://github.com/pippipalma/MAMBA/archive/refs/heads/main.zip);
+2. Extract the content of ``MAMBA-main.zip`` to a ``folder/`` of your choice;
+3. Open a Matlab session;
+4. Add the following folders to the path of Matlab:
+- ``folder/``;
+- ``folder/Engine/``;
+- ``folder/External/`` and its subfolders;
+5. Change the Matlab current folder to ``folder/WorkedExamples/``;
+6. Build a synthetic cohort with the function ``synthetic_cohort``;
+7. Have fun with the available tests (*e.g.*, ``test2``).
