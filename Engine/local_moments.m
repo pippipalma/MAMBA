@@ -15,15 +15,17 @@ function varargout = local_moments(img, kern, varargin)
 %     kern). M <= L <= N;
 %   - imask: (L+1)th index of the img component for further output masking
 %     (default = 0. If imask < 0, mask is dilated by kern);
-%   - p: scalar power of the Holder mean (default = 1).
-%   - progress_bar: flag for displaying the progress bar (default: true)
-%   - process: name of the progress bar (default: 'local_moments')
+%   - p: scalar power of the Holder mean (default = 1);
+%   - norm: if false, the outputs are the weighted local sum of powers
+%     (default: true);
+%   - progress_bar: flag for displaying the progress bar (default: true);
+%   - process: name of the progress bar (default: 'local_moments').
 %
 %   Author: Giuseppe Palma
-%   Date: 20/04/2022
+%   Date: 14/10/2022
 
 o = opt_pars('mask', true, 'imask', 0, 'p', 1, 'progress_bar', true, ...
-    'process', 'local_moments', varargin{:});
+    'process', 'local_moments', 'norm', true, varargin{:});
 isc = iscell(img);
 if isc
     sz = cellfun(@size, img, 'UniformOutput', false);
@@ -100,13 +102,13 @@ else
         img = img.^o.p;
     end
     varargout(1 : nout) = {zeros(s)};
-    c = out./c;
+    out = out./c;
     kt = fftn(kern, sx);
     for i = 1 : prod(s(ndk + 1 : end))
         i2 = mod(i - 1, imax) + 1;
         img(in{:}, i) = img(in{:}, i).*o.mask(in{:}, i2);
         for j = 1 : nout
-            varargout{j}(in{:}, i) = tr(ifftn(fftn(img(in{:}, i).^j, sx).*kt)).*c(in{:}, i2);
+            varargout{j}(in{:}, i) = tr(ifftn(fftn(img(in{:}, i).^j, sx).*kt)).*out(in{:}, i2);
             if holder
                 varargout{1}(in{:}, i) = varargout{1}(in{:}, i).^(1/o.p);
             end
@@ -120,10 +122,14 @@ for j = nout : -1 : 2
     varargout{j} = varargout{j} + (-1)^(j - 1)*(j - 1)*varargout{1}.^j;
 end
 for j = 1 : nout
-    if j == 2
-        varargout{j} = sqrt(max(0, varargout{j}));
-    elseif j > 2
-        varargout{j} = varargout{j}./varargout{2}.^j;
+    if o.norm
+        if j == 2
+            varargout{j} = sqrt(max(0, varargout{j}));
+        elseif j > 2
+            varargout{j} = varargout{j}./varargout{2}.^j;
+        end
+    else
+        varargout{j} = varargout{j}.*c;
     end
     varargout{j}(isnan(varargout{j})) = 0;
 end
