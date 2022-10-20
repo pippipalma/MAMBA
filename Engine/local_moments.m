@@ -16,16 +16,18 @@ function varargout = local_moments(img, kern, varargin)
 %   - imask: (L+1)th index of the img component for further output masking
 %     (default = 0. If imask < 0, mask is dilated by kern);
 %   - p: scalar power of the Holder mean (default = 1);
-%   - norm: if false, the outputs are the weighted local sum of powers
-%     (default: true);
+%   - type: definition of the outputs (default: 'sample')
+%     - 'sample': sample moments;
+%     - 'population': population moments (kern must be a logical mask);
+%     - 'sum': weighted sum of powers.
 %   - progress_bar: flag for displaying the progress bar (default: true);
 %   - process: name of the progress bar (default: 'local_moments').
 %
 %   Author: Giuseppe Palma
-%   Date: 14/10/2022
+%   Date: 20/10/2022
 
 o = opt_pars('mask', true, 'imask', 0, 'p', 1, 'progress_bar', true, ...
-    'process', 'local_moments', 'norm', true, varargin{:});
+    'process', 'local_moments', 'type', 'sample', varargin{:});
 isc = iscell(img);
 if isc
     sz = cellfun(@size, img, 'UniformOutput', false);
@@ -66,6 +68,14 @@ holder = o.p ~= 1;
 nout = max(1, nargout);
 if nout > 1 && (morph || holder)
     error('Too many output arguments')
+end
+if strcmpi(o.type, 'population')
+    if nout > 4
+        warning('Sample moments are returned for orders higher than 4')
+    end
+    if ~all(ismember(kern(:), [0 1]))
+        warning('Weighted unbiased estimators of sample moments are not supported')
+    end
 end
 sx = 2*r + s(1 : ndk);
 inx(1 : ndk) = {[]};
@@ -122,14 +132,24 @@ for j = nout : -1 : 2
     varargout{j} = varargout{j} + (-1)^(j - 1)*(j - 1)*varargout{1}.^j;
 end
 for j = 1 : nout
-    if o.norm
+    if strcmpi(o.type, 'sum')
+        varargout{j} = varargout{j}.*c;
+    else
+        if strcmpi(o.type, 'population')
+            if j == 2
+                varargout{j} = varargout{j}.*c./(c - 1);
+            elseif j == 3
+                varargout{j} = varargout{j}.*c.*c./((c - 1).*(c - 2));
+            elseif j == 4
+                varargout{j} = (varargout{j}.*c.*c.*c./(c - 1) + (9 - 2*c).*varargout{2}.*varargout{2}) ...
+                    ./(c.*(c - 3) + 3);
+            end
+        end
         if j == 2
             varargout{j} = sqrt(max(0, varargout{j}));
         elseif j > 2
             varargout{j} = varargout{j}./varargout{2}.^j;
         end
-    else
-        varargout{j} = varargout{j}.*c;
     end
     varargout{j}(isnan(varargout{j})) = 0;
 end
