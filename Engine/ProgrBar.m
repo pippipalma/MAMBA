@@ -2,7 +2,7 @@ function H = ProgrBar(h, op, it, wk, tit, T)
 % h = ProgrBar(h, operation, iterations, workers, title, refresh_time)
 %
 %   Author: Giuseppe Palma
-%   Date: 15/04/2022
+%   Date: 27/12/2022
 
 if islogical(h) && ~h
     if nargout
@@ -13,7 +13,7 @@ end
 persistent c t_beg N ti
 switch lower(op)
     case 'create'
-        if ~isempty(N) || is_in_parallel
+        if ~isempty(N) || is_in_parallel || wk && ~isICT
             H = false;
             return
         end
