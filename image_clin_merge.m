@@ -16,7 +16,7 @@ function [tab, CCS] = image_clin_merge(varargin)
 %   Further options are shared with function image_read.
 %
 %   Author: Giuseppe Palma
-%   Date: 27/04/2022
+%   Date: 17/01/2023
 
 if istable(varargin{1})
     [tab, CCS] = varargin{1 : 2};
@@ -59,7 +59,7 @@ l = height(tab);
 if ~isempty(s.der_vars) && ischar(s.der_vars{1})
     s.der_vars = {s.der_vars};
 end
-CCSv = @(x) x(1) == '#' && isfield(CCS, x(2 : end));
+CCSv = @(x) strcmp('#', x(1 : min(end, 1))) && isfield(CCS, x(2 : end));
 ops = {{'xor' 'symmdiff' 1} {'and' '&' 1} {'or' '|' 1} {'lt' '<' 0} ...
     {'gt' '>' 0} {'eq' '==' '=' 0} {'ne' '~=' '<>' 0} {'le' '<=' 0} ...
     {'ge' '>=' 0} {'plus' '+' 1} {'minus' '-' 1} {'mtimes' '*' 1} ...
