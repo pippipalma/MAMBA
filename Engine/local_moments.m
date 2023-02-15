@@ -24,7 +24,7 @@ function varargout = local_moments(img, kern, varargin)
 %   - process: name of the progress bar (default: 'local_moments').
 %
 %   Author: Giuseppe Palma
-%   Date: 20/10/2022
+%   Date: 10/02/2023
 
 o = opt_pars('mask', true, 'imask', 0, 'p', 1, 'progress_bar', true, ...
     'process', 'local_moments', 'type', 'sample', varargin{:});
@@ -109,6 +109,9 @@ if morph
     varargout{1} = out;
 else
     if holder
+        if o.p < 0
+            img(~out & true(s)) = 1;
+        end
         img = img.^o.p;
     end
     varargout(1 : nout) = {zeros(s)};
