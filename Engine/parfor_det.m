@@ -5,15 +5,16 @@ function wk = parfor_det(workers)
 %   Date: 11/04/2023
 
 persistent nw
-p = gcp('nocreate');
+if isPCT
+    p = gcp('nocreate');
+else
+    p = [];
+    nw = 0;
+end
 if isempty(p)
     if isempty(nw)
-        if isPCT
-            pc = parcluster;
-            nw = pc.NumWorkers;
-        else
-            nw = 0;
-        end
+        pc = parcluster;
+        nw = pc.NumWorkers;
     end
     n = nw;
 else
