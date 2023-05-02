@@ -13,7 +13,7 @@ MAMBA is an open-source toolbox, freely available for academic and non-commercia
 Users are encouraged to freely adapt MAMBA according to their needs, and assume all responsibility and risk with respect to their use of the toolbox, which is provided “AS IS”. In addition, users are welcome to cite the following references, anywhere they use MAMBA:
 
 - G. Palma, S. Monti, and L. Cella. <a href="https://www.sciencedirect.com/science/article/pii/S1120179719305344" target="_blank">*Voxel-based analysis in radiation oncology: A methodological cookbook*</a>. Physica Medica, 69:192–204, 2020;
-- G. Palma, L. Cella, and S. Monti. <a href="https://aapm.onlinelibrary.wiley.com/doi/full/10.1002/mp.16260" target="_blank">*MAMBA—Multi-pAradigM voxel-Based Analysis: A computational cookbot*</a>. Medical Physics, 1-6, 2023.
+- G. Palma, L. Cella, and S. Monti. <a href="https://aapm.onlinelibrary.wiley.com/doi/full/10.1002/mp.16260" target="_blank">*MAMBA—Multi-pAradigM voxel-Based Analysis: A computational cookbot*</a>. Medical Physics, 50:2317–2322, 2023.
 
 The MAMBA User Manual (which includes the extensive reference manual and several examples that the user can fully work out on a synthetic dataset, as well as the toolbox configurations that led to clinical results previously published in the literature) can be found [here](Docs/UserManual.pdf).
 
